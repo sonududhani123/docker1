@@ -1,0 +1,20 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: acr-secrets
+
+steps:
+- script: |
+    docker login containersd-hggrdrhbg7d7b3fc.azurecr.io \
+      -u $(REGISTRY_USERNAME) \
+      -p $(REGISTRY_PASSWORD)
+  displayName: Docker Login
+
+- script: |
+    docker build -t containersd-hggrdrhbg7d7b3fc.azurecr.io/apache-demo:latest .
+    docker push containersd-hggrdrhbg7d7b3fc.azurecr.io/apache-demo:latest
+  displayName: Build and Push Image
